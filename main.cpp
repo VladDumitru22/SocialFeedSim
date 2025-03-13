@@ -34,18 +34,27 @@ class User{
         }
 };
 
+class Website{
+    private:
+        int users_count;
+        std::vector<User> users;
+    public:
+        Website(int temp_users_count, std::vector<User> temp_users)
+            : users_count(temp_users_count), users(std::move(temp_users)) {}
+};
+
 int User::ID_count = 0;
 
 int main(){
 
-    int users_count;
+    int temp_users_count;
     std::vector<User> users;
     
     std::cout << "Enter the number of users: ";
-    std::cin >> users_count;
+    std::cin >> temp_users_count;
     std::cin.ignore();
 
-    for (int i = 0; i < users_count; i++) {
+    for (int i = 0; i < temp_users_count; i++) {
         std::string temp_name;
         int temp_Y, temp_M, temp_D;
         
