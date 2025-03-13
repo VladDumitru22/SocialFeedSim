@@ -45,13 +45,34 @@ int main(){
         
         users.emplace_back(temp_name, temp_Y, temp_M, temp_D);
     }
-    
-    std::cout << "\nRegistered Users:\n";
-    for (size_t i = 0; i < users.size(); i++) {
-        users[i].displayUser();
-    }
 
+    int option;
+    do {
+        std::cout << "\nSelect an Option:\n";
+        std::cout << "1. User Info\n";
+        std::cout << "0. Exit\n";
+        std::cout << "Option: ";
+        std::cin >> option;
 
+        switch(option){
+            case 1:
+                std::cout << "\nRegistered Users:\n";
+                for(int i=0; i < users.size(); i++){
+                    users[i].displayUser();
+                }
+                break;
+            
+            
 
-    return 0;
+                
+
+            case 0:
+                std::cout << "Exiting...\n";
+                break;
+
+            default: std::cout << "Invalid Input!\n" << std::endl;
+        }
+
+    } while (option != 0);
+
 }
