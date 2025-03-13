@@ -16,6 +16,18 @@ class User{
             this->ID = ++ID_count;
         }
 
+        int get_year(){
+            return this->Y;
+        }
+        
+        int get_month(){
+            return this->M;
+        }
+        
+        int get_day(){
+            return this->D;
+        }
+
         void displayUser() const {
             std::cout << "ID: " << ID << ", Name: " << name 
                       << ", Date of Birth: " << Y << "-" << M << "-" << D << std::endl;
