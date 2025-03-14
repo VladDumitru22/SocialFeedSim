@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <ctime>
 
 class User{
     private:
@@ -16,21 +17,11 @@ class User{
             this->ID = ++ID_count;
         }
 
-        int get_year(){
-            return this->Y;
-        }
-        
-        int get_month(){
-            return this->M;
-        }
-        
-        int get_day(){
-            return this->D;
-        }
-
-        int get_ID(){
-            return this->ID;
-        }
+        int get_year() { return this->Y; }
+        int get_month() { return this->M; }
+        int get_day() { return this->D; }
+        int get_ID() { return this->ID; }
+        std::string get_name() { return this->name; }
 
         void displayUser() const {
             std::cout << "ID: " << ID << ", Name: " << name 
@@ -44,6 +35,15 @@ bool isLeapYear(int year) {
     }else{
         return false;
     }
+}
+
+void getCurrentDate(int &year, int &month, int &day) {
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+
+    year = 1900 + ltm->tm_year;
+    month = 1 + ltm->tm_mon;
+    day = ltm->tm_mday;
 }
 
 class Website{
@@ -74,6 +74,40 @@ class Website{
                 } else {
                     std::cout << "ID: " << users[i].get_ID() << " Date of birth is Valid: " 
                             << users[i].get_year() << "-" << users[i].get_month() << "-" << users[i].get_day() << "\n";
+                }
+            }
+        }
+
+        void isAdult() {
+            int currentYear, currentMonth, currentDay;
+            getCurrentDate(currentYear, currentMonth, currentDay);
+            std::cout << "\nAdults:\n";
+
+            for(int i=0; i<users.size(); i++){
+                int age = currentYear - users[i].get_year();
+                if(currentMonth < users[i].get_month() || (currentMonth == users[i].get_month() && currentDay < users[i].get_day())) {
+                    age--;
+                }
+
+                if(age >= 18){
+                    std::cout << "ID: " << users[i].get_ID() << ", Name: " << users[i].get_name() << ", Age: " << age << "\n";
+                }
+            }
+        }
+
+        void isMinor() {
+            int currentYear, currentMonth, currentDay;
+            getCurrentDate(currentYear, currentMonth, currentDay);
+            std::cout << "\nMinors:\n";
+
+            for(int i=0; i<users.size(); i++){
+                int age = currentYear - users[i].get_year();
+                if(currentMonth < users[i].get_month() || (currentMonth == users[i].get_month() && currentDay < users[i].get_day())) {
+                    age--;
+                }
+
+                if(age < 18){
+                    std::cout << "ID: " << users[i].get_ID() << ", Name: " << users[i].get_name() << ", Age: " << age << "\n";
                 }
             }
         }
@@ -110,6 +144,8 @@ int main(){
         std::cout << "\nSelect an Option:\n";
         std::cout << "1. User Info\n";
         std::cout << "2. Date of birth Validation\n";
+        std::cout << "3. Display Adults\n";
+        std::cout << "4. Display Minors\n";
         std::cout << "0. Exit\n";
         std::cout << "Option: ";
         std::cin >> option;
@@ -125,7 +161,14 @@ int main(){
             case 2:
                 std::cout << "\nUsers:\n";
                 site.isValidDate();
+                break;
 
+            case 3:
+                site.isAdult();
+                break;
+            
+            case 4:
+                site.isMinor();
                 break;
 
             case 0:
