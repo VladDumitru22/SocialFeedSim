@@ -28,11 +28,23 @@ class User{
             return this->D;
         }
 
+        int get_ID(){
+            return this->ID;
+        }
+
         void displayUser() const {
             std::cout << "ID: " << ID << ", Name: " << name 
                       << ", Date of Birth: " << Y << "-" << M << "-" << D << std::endl;
         }
 };
+
+bool isLeapYear(int year) {
+    if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)){
+        return true;
+    }else{
+        return false;
+    }
+}
 
 class Website{
     private:
@@ -41,6 +53,30 @@ class Website{
     public:
         Website(int temp_users_count, std::vector<User> temp_users)
             : users_count(temp_users_count), users(std::move(temp_users)) {}
+
+        void isValidDate() {
+            for(int i=0; i<users_count; i++){
+
+                if (users[i].get_year() < 1900 || users[i].get_year() > 2025 || users[i].get_month() < 1 ||
+                    users[i].get_month() > 12 || users[i].get_day() < 1) {
+                    std::cout << "ID: " << users[i].get_ID() << " ERROR: Date of birth is Invalid\n";
+                    continue;
+                }
+        
+                std::vector<int> daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        
+                if (isLeapYear(users[i].get_year())) {
+                    daysInMonth[1] = 29;
+                }
+        
+                if (users[i].get_day() > daysInMonth[users[i].get_month() - 1]) {
+                    std::cout << "ID: " << users[i].get_ID() << " ERROR: Date of birth is Invalid\n";
+                } else {
+                    std::cout << "ID: " << users[i].get_ID() << " Date of birth is Valid: " 
+                            << users[i].get_year() << "-" << users[i].get_month() << "-" << users[i].get_day() << "\n";
+                }
+            }
+        }
 };
 
 int User::ID_count = 0;
@@ -67,10 +103,13 @@ int main(){
         users.emplace_back(temp_name, temp_Y, temp_M, temp_D);
     }
 
+    Website site(temp_users_count, users);
+
     int option;
     do {
         std::cout << "\nSelect an Option:\n";
         std::cout << "1. User Info\n";
+        std::cout << "2. Date of birth Validation\n";
         std::cout << "0. Exit\n";
         std::cout << "Option: ";
         std::cin >> option;
@@ -78,14 +117,16 @@ int main(){
         switch(option){
             case 1:
                 std::cout << "\nRegistered Users:\n";
-                for(int i=0; i < users.size(); i++){
+                for (int i=0; i < users.size(); i++){
                     users[i].displayUser();
                 }
                 break;
             
-            
+            case 2:
+                std::cout << "\nUsers:\n";
+                site.isValidDate();
 
-                
+                break;
 
             case 0:
                 std::cout << "Exiting...\n";
